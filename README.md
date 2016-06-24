@@ -6,7 +6,7 @@
   $> git clone git@github.com:Aldizh/optimized-portfolio.git
   ```
 
-2. Open index.html file in yur local browser
+2. Open index.html file in your local browser
 
 ### Resources for optimization tips and tricks
 * [Optimizing Performance](https://developers.google.com/web/fundamentals/performance/ "web performance")
