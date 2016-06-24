@@ -1,5 +1,5 @@
-/*  test change
-Welcome to the 60fps project! Your goal is to make Cam's Pizzeria website run
+'use strict';
+/* Welcome to the 60fps project! Your goal is to make Cam's Pizzeria website run
 jank-free at 60 frames per second.
 
 There are two major issues in this code that lead to sub-60fps performance. Can
@@ -13,8 +13,7 @@ http://www.html5rocks.com/en/tutorials/webperformance/usertiming/
 
 Creator:
 Cameron Pittman, Udacity Course Developer
-cameron *at* udacity *dot* com
-*/
+cameron *at* udacity *dot* com */
 
 // As you may have realized, this website randomly generates pizzas.
 // Here are arrays of all possible pizza ingredients.
@@ -419,10 +418,12 @@ var resizePizzas = function(size) {
 
   var width = changeSliderLabel(size);
   // Iterates through pizza elements on the page and changes their widths
+
   function changePizzaSizes(size) {
     var pizzas = document.getElementsByClassName("randomPizzaContainer");
-    for (var i = 0; i < pizzas.length; i++) {
-      pizzaEl[i].style.width = width + '%';
+    var arrLength = pizzas.length;
+    for (var i = 0; i < arrLength; i++) {
+      pizzas[i].style.width = width + '%';
     }
   }
 
@@ -438,8 +439,8 @@ var resizePizzas = function(size) {
 window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
+var pizzasDiv = document.getElementById("randomPizzas");
 for (var i = 2; i < 100; i++) {
-  var pizzasDiv = document.getElementById("randomPizzas");
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
 
@@ -480,23 +481,19 @@ function updatePositions() {
   var itemLength = items.length;
   var phase = [];
 
+  // Set up deltas and transform object
   for (var j = 0; j < 5; j++){ phase[j] = Math.sin(scrollDelta + (j%5)) * 100; }
-
-  //update left style
   for (var i = 0; i < itemLength; i++) {
-    var moveX = items[i].basicLeft + phase[i%5] - 1250;
-    items[i].style.transform = 'translateX(' + moveX + 'px)';
+    items[i].style.transform = 'translateX(' + phase[i % 5] + 'px)';
   }
   
   // User Timing API to the rescue again. Seriously, it's worth learning.
-  // Super easy to create custom metrics.
   window.performance.mark("mark_end_frame");
   window.performance.measure("measure_frame_duration", "mark_start_frame", "mark_end_frame");
   if (frame % 10 === 0) {
     var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
     logAverageFrame(timesToUpdatePosition);
   }
-  
 }
 
 function animate() {
@@ -525,8 +522,8 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.src = "images/pizza.png";
     elem.style.height = "100px";
     elem.style.width = "73.333px";
-    elem.style.top = (Math.floor(i / cols) * s) + 'px';// Could not use translate properly here since postion is not set
-    elem.basicLeft = (i % cols) * s;
+    elem.style.top = (Math.floor(i / cols) * s) + 'px';
+    elem.style.left = (i % cols) * s + 'px'; //Setting up for the transformation
     movingPizzaSection.appendChild(elem);
   }
   updatePositions();
